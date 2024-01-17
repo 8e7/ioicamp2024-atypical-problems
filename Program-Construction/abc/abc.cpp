@@ -273,17 +273,12 @@ circuit(
 			swap(p, q);
 			return inf;
 		}
-		int prevs = 0, prevb = 0;
+		int prevb = 0;
 		for (int i = 0;i < comp.size();i++) {
 			int b = comp[i];
 			int ts = op(OP_LESS, p+b, q+b), tb = op(OP_GREATER, p+b, q+b);
-			if (i == 0) {
-				prevs = ts, prevb = tb;
-			} else {
-				int small = op(OP_OR, ts, op(OP_GREATER, prevs, tb));
-				int big = op(OP_OR, tb, op(OP_GREATER, prevb, ts));
-				prevs = small, prevb = big;
-			}
+			prevb = op(OP_GREATER, prevb, ts); //0010
+			prevb = op(OP_OR, prevb, tb); //0111
 		}
 		swapobj(p, q, prevb);
 		return prevb;
